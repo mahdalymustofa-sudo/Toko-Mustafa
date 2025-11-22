@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Mustafa - Belanja Kebutuhan Sehari-hari</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #4facfe);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            z-index: -1;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 30px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 14px 50px 14px 20px;
+            border: 2px solid transparent;
+            border-radius: 30px;
+            font-size: 14px;
+            background: rgba(102, 126, 234, 0.1);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .cart-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cart-icon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cart-icon:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .cart-icon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%);
+            border-radius: 25px;
+            padding: 60px 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            animation: fadeInUp 0.8s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: '🛒';
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.1;
+            top: -50px;
+            right: -50px;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-banner h1 {
+            font-size: 48px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .hero-banner p {
+            font-size: 20px;
+            color: #666;
+        }
+
+        .filters {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            animation: fadeInUp 1s ease;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(135deg, #667eea, #764ba2) border-box;
+            color: #667eea;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .filter-btn:hover::before, .filter-btn.active::before {
+            left: 0;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            cursor: pointer;
+            animation: fadeInScale 0.6s ease;
+            animation-fill-mode: both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+        }
+
+        .product-card:hover::before {
+            top: -100%;
+            left: -100%;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 15px;
+            height: 45px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-price {
+            color: #667eea;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .add-to-cart::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .add-to-cart:active::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .chatbot {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .chatbot-button {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-size: 32px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.7);
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 120px;
+            right: 30px;
+            width: 380px;
+            height: 550px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .chatbot-window.active {
+            display: flex;
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .message {
+            margin-bottom: 18px;
+            padding: 14px 18px;
+            border-radius: 18px;
+            max-width: 80%;
+            animation: messageSlide 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .bot-message {
+            background: white;
+            color: #333;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .user-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            gap: 12px;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-input input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 3px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .chatbot-input button {
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-input button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-chat:hover {
+            transform: rotate(90deg) scale(1.2);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 12px 18px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid #667eea;
+            color: #667eea;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        }
+
+        .page-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .page-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 24px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .hero-banner h1 { font-size: 32px; }
+            .chatbot-window { width: calc(100% - 40px); right: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">🏪 Toko Mustafa</div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Cari produk favoritmu...">
+                <span class="search-icon">🔍</span>
+            </div>
+            <div class="cart-icon" onclick="showCart()">
+                <span style="position: relative; z-index: 1;">🛍️ Keranjang (<span id="cartCount">0</span>)</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="hero-banner">
+            <h1>Selamat Datang di Toko Mustafa</h1>
+            <p>✨ Belanja Kebutuhan Sehari-hari dengan Harga Terbaik ✨</p>
+        </div>
+
+        <div class="filters">
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterProducts('Semua')">🌟 Semua</button>
+                <button class="filter-btn" onclick="filterProducts('Makanan')">🍚 Makanan</button>
+                <button class="filter-btn" onclick="filterProducts('Minuman')">🥤 Minuman</button>
+                <button class="filter-btn" onclick="filterProducts('Kebersihan')">🧼 Kebersihan</button>
+                <button class="filter-btn" onclick="filterProducts('Perawatan')">💄 Perawatan</button>
+                <button class="filter-btn" onclick="filterProducts('Bayi')">👶 Bayi</button>
+                <button class="filter-btn" onclick="filterProducts('Snack')">🍿 Snack</button>
+            </div>
+        </div>
+
+        <div class="products-grid" id="productsGrid"></div>
+        
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <div class="chatbot">
+        <button class="chatbot-button" onclick="toggleChat()">💬</button>
+        <div class="chatbot-window" id="chatWindow">
+            <div class="chatbot-header">
+                <span>🤖 Asisten Toko Mustafa</span>
+                <button class="close-chat" onclick="toggleChat()">×</button>
+            </div>
+            <div class="chatbot-messages" id="chatMessages">
+                <div class="message bot-message">
+                    Halo! Selamat datang di Toko Mustafa 🏪<br>Ada yang bisa saya bantu hari ini?
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatInput" placeholder="Ketik pesan...">
+                <button onclick="sendMessage()">Kirim</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const productData = {
+            Makanan: [
+                { name: 'Indomie Goreng', icon: '🍜', brands: ['Original', 'Pedas', 'Jumbo', 'Ayam Bawang', 'Soto', 'Kari Ayam'] },
+                { name: 'Beras', icon: '🌾', brands: ['Pandan Wangi 5kg', 'Setra Ramos 10kg', 'IR64 5kg', 'Rojolele Premium', 'Cap Lele 25kg'] },
+                { name: 'Minyak Goreng', icon: '🥄', brands: ['Bimoli 2L', 'Sania 1L', 'Filma 2L', 'Tropical 5L', 'Fortune 1L'] },
+                { name: 'Gula Pasir', icon: '🍚', brands: ['Gulaku 1kg', 'Gula Jawa 500g', 'Gula Merah', 'Tropicana Slim'] },
+                { name: 'Tepung Terigu', icon: '🌾', brands: ['Segitiga Biru 1kg', 'Kunci Biru 1kg', 'Cakra Kembar 1kg', 'Bogasari 25kg'] },
+                { name: 'Telur Ayam', icon: '🥚', brands: ['Negeri 1kg', 'Kampung 1kg', 'Omega 10 butir', 'Premium 1 tray'] },
+                { name: 'Susu Kental Manis', icon: '🥛', brands: ['Indomilk Putih', 'Frisian Flag Coklat', 'Cap Enak', 'Carnation'] },
+                { name: 'Kecap', icon: '🥫', brands: ['Bango Manis 220ml', 'ABC Manis 275ml', 'Sedaap 140ml', 'Bango Asin 135ml'] },
+                { name: 'Saos Sambal', icon: '🌶️', brands: ['ABC 340ml', 'Indofood 340ml', 'Del Monte 320ml', 'Heinz 300ml'] },
+                { name: 'Sarden Kaleng', icon: '🐟', brands: ['ABC 155g', 'Botan 425g', 'Maya 155g', 'Gaga 425g'] },
+                { name: 'Kornet Sapi', icon: '🥫', brands: ['Pronas 198g', 'Brazil 198g', 'CedSar 340g', 'Kimbo 340g'] },
+                { name: 'Mentega', icon: '🧈', brands: ['Blue Band 200g', 'Simas 200g', 'Anchor 227g', 'Wijsman 200g'] },
+                { name: 'Keju', icon: '🧀', brands: ['Kraft Cheddar 180g', 'Prochiz 180g', 'Anchor 250g', 'Parmesan 100g'] }
+            ],
+            Minuman: [
+                { name: 'Aqua', icon: '💧', brands: ['330ml', '600ml', '1500ml', '19L Galon', 'Mini 240ml'] },
+                { name: 'Teh Botol', icon: '🍵', brands: ['Sosro 450ml', 'Poci 350ml', 'Freshtea 350ml', 'Kotak 250ml'] },
+                { name: 'Coca Cola', icon: '🥤', brands: ['390ml Kaleng', '1.5L', 'Zero 330ml', 'Fanta 390ml', 'Sprite 1.5L'] },
+                { name: 'Kopi', icon: '☕', brands: ['Kapal Api Special', 'Good Day Cappuccino', 'Nescafe Classic', 'ABC Susu', 'Torabika Duo'] },
+                { name: 'Susu UHT', icon: '🥛', brands: ['Ultra Milk 1L Coklat', 'Indomilk 1L Putih', 'Frisian Flag 900ml', 'Greenfields 1L'] },
+                { name: 'Jus Buah', icon: '🧃', brands: ['Buavita Jeruk 250ml', 'Minute Maid 300ml', 'Tropicana Slim 1L', 'Sunquick 840ml'] },
+                { name: 'Sirup', icon: '🍹', brands: ['Marjan Cocopandan 460ml', 'ABC Melon 485ml', 'Sunquick Orange 840ml'] },
+                { name: 'Energi Drink', icon: '⚡', brands: ['Kratingdaeng 150ml', 'Extra Joss', 'Hemaviton 150ml', 'M-150 150ml'] },
+                { name: 'Air Mineral', icon: '💦', brands: ['Ades 600ml', 'Le Minerale 600ml', 'Vit 600ml', 'Pristine 1500ml'] }
+            ],
+            Kebersihan: [
+                { name: 'Sabun Cuci Piring', icon: '🧽', brands: ['Sunlight 800ml Jeruk', 'Mama Lemon 800ml', 'Ekonomi 780ml', 'Attack 800ml'] },
+                { name: 'Deterjen', icon: '🧺', brands: ['Rinso 900g', 'Attack 800g', 'So Klin 900g', 'Daia 900g'] },
+                { name: 'Sabun Mandi', icon: '🧼', brands: ['Lifebuoy 85g', 'Lux 85g', 'Nuvo 85g', 'Dove 100g', 'Biore 100g'] },
+                { name: 'Shampoo', icon: '🧴', brands: ['Pantene 170ml', 'Clear 160ml', 'Sunsilk 170ml', 'Dove 170ml', 'Head & Shoulders 160ml'] },
+                { name: 'Pasta Gigi', icon: '🦷', brands: ['Pepsodent 190g', 'Close Up 160g', 'Formula 190g', 'Sensodyne 100g'] },
+                { name: 'Tisu', icon: '🧻', brands: ['Paseo 250 sheets', 'Tessa 250 sheets', 'Nice 250 sheets', 'Selection 250 sheets'] },
+                { name: 'Pembersih Lantai', icon: '🧹', brands: ['Wipol 800ml Pine', 'Stella 900ml', 'Superpel 800ml', 'Vixal 800ml'] },
+                { name: 'Pengharum Ruangan', icon: '🌸', brands: ['Stella Matic 225ml', 'Baygon Aerosol 600ml', 'Glade 300ml'] },
+                { name: 'Sikat Gigi', icon: '🪥', brands: ['Pepsodent', 'Formula', 'Oral-B', 'Systema'] }
+            ],
+            Perawatan: [
+                { name: 'Lotion Badan', icon: '🧴', brands: ['Vaseline 200ml', 'Citra 200ml', 'Nivea 200ml', 'Marina 200ml'] },
+                { name: 'Deodorant', icon: '💨', brands: ['Rexona Roll On 45ml', 'Dove Spray 150ml', 'Nivea Roll On 50ml'] },
+                { name: 'Bedak', icon: '💄', brands: ['Pigeon Compact 40g', 'Marcks Loose 40g', 'Viva Compact 40g', 'Purbasari 45g'] },
+                { name: 'Sabun Muka', icon: '🧖', brands: ['Pond\'s 100g', 'Biore 100g', 'Garnier 100ml', 'Kahf 100ml'] },
+                { name: 'Masker Wajah', icon: '😷', brands: ['Sensi Earloop 50pcs', 'Nexcare 3M 5pcs', 'OneMed Surgical 50pcs'] },
+                { name: 'Minyak Rambut', icon: '💇', brands: ['Gatsby 75ml', 'Tancho 120ml', 'Murray\'s 85g', 'Brylcreem 140ml'] },
+                { name: 'Hand Sanitizer', icon: '🤲', brands: ['Antis 55ml', 'Dettol 50ml', 'Lifebuoy 50ml', 'Marina 60ml'] }
+            ],
+            Bayi: [
+                { name: 'Popok Bayi', icon: '👶', brands: ['Pampers M 52pcs', 'MamyPoko L 46pcs', 'Merries M 50pcs', 'Sweety XL 42pcs'] },
+                { name: 'Susu Formula', icon: '🍼', brands: ['SGM 0-6 bulan 400g', 'Lactogen 1 400g', 'Bebelac 3 800g', 'Enfagrow 800g'] },
+                { name: 'Baby Oil', icon: '🧴', brands: ['Cussons 100ml', 'Zwitsal 100ml', 'Johnson\'s 200ml', 'Pigeon 200ml'] },
+                { name: 'Baby Powder', icon: '✨', brands: ['Cussons 100g', 'Zwitsal 100g', 'Pigeon 50g', 'Sleek 100g'] },
+                { name: 'Tisu Basah', icon: '🧻', brands: ['Baby Happy 80 sheets', 'Pigeon 80 sheets', 'Sweety 50 sheets'] },
+                { name: 'Shampo Bayi', icon: '🛁', brands: ['Johnson\'s 200ml', 'Zwitsal 200ml', 'Cussons 200ml', 'Pigeon 200ml'] }
+            ],
+            Snack: [
+                { name: 'Chitato', icon: '🍟', brands: ['Sapi Panggang 68g', 'Ayam Panggang 68g', 'Indomie 55g', 'Rasa Sapi 35g'] },
+                { name: 'Biskuit', icon: '🍪', brands: ['Roma Kelapa 300g', 'Good Time 80g', 'Oreo 137g', 'Ritz 118g'] },
+                { name: 'Wafer', icon: '🥠', brands: ['Tango 130g Coklat', 'Beng-beng 30g', 'Astor 125g', 'Richeese 145g'] },
+                { name: 'Coklat', icon: '🍫', brands: ['SilverQueen 65g', 'Cadbury 65g', 'Toblerone 100g', 'KitKat 35g'] },
+                { name: 'Permen', icon: '🍬', brands: ['Kopiko 120g', 'Relaxa 50 pcs', 'Mentos 37g', 'Nano-nano 150g'] },
+                { name: 'Keripik', icon: '🥔', brands: ['Lays 68g', 'Cheetos 35g', 'Qtela 55g', 'Piattos 50g'] },
+                { name: 'Kacang', icon: '🥜', brands: ['Kacang Dua Kelinci 100g', 'Garuda 200g', 'Koro 100g'] },
+                { name: 'Mie Snack', icon: '🍜', brands: ['Mie Gemes Pedas 40g', 'Gemez 75g', 'Anak Mas 40g'] },
+                { name: 'Es Krim', icon: '🍦', brands: ['Walls Cornetto', 'Aice Mochi', 'Magnum Classic', 'Paddle Pop'] }
+            ]
+        };
+
+        let products = [];
+        let cart = [];
+        let currentFilter = 'Semua';
+        let currentPage = 1;
+        const itemsPerPage = 24;
+
+        // Generate 500+ products with real names
+        Object.keys(productData).forEach(category => {
+            productData[category].forEach(product => {
+                product.brands.forEach((brand, index) => {
+                    products.push({
+                        id: products.length + 1,
+                        name: `${product.name} ${brand}`,
+                        category: category,
+                        price: Math.floor(Math.random() * 95000) + 5000,
+                        icon: product.icon
+                    });
+                });
+            });
+        });
+
+        function displayProducts() {
+            const filtered = currentFilter === 'Semua' 
+                ? products 
+                : products.filter(p => p.category === currentFilter);
+            
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const searched = searchTerm 
+                ? filtered.filter(p => p.name.toLowerCase().includes(searchTerm))
+                : filtered;
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedProducts = searched.slice(startIndex, endIndex);
+
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = paginatedProducts.map((product, index) => `
+                <div class="product-card" style="animation-delay: ${index * 0.05}s">
+                    <div class="product-image">${product.icon}</div>
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-price">Rp ${product.price.toLocaleString('id-ID')}</div>
+                    <button class="add-to-cart" onclick="addToCart(${product.id})">
+                        Tambah ke Keranjang
+                    </button>
+                </div>
+            `).join('');
+
+            displayPagination(searched.length);
+        }
+
+        function displayPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById('pagination');
+            
+            let paginationHTML = '';
+            
+            if (totalPages > 1) {
+                for (let i = 1; i <= totalPages; i++) {
+                    if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                        paginationHTML += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+                    } else if (i === currentPage - 3 || i === currentPage + 3) {
+                        paginationHTML += `<span style="color: white; padding: 10px;">...</span>`;
+                    }
+                }
+            }
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            displayProducts();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function filterProducts(category) {
+            currentFilter = category;
+            currentPage = 1;
+            displayProducts();
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            cart.push(product);
+            document.getElementById('cartCount').textContent = cart.length;
+            
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 30px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 20px 30px;
+                border-radius: 15px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                animation: slideInRight 0.5s ease, fadeOut 0.5s ease 2.5s;
+                font-weight: 600;
+            `;
+            notification.textContent = `✓ ${product.name} ditambahkan!`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        function showCart() {
+            if (cart.length === 0) {
+                alert('🛒 Keranjang masih kosong!\n\nYuk belanja dulu di Toko Mustafa! 😊');
+                return;
+            }
+            
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            const cartItems = cart.reduce((acc, item) => {
+                const existing = acc.find(i => i.name === item.name);
+                if (existing) {
+                    existing.qty += 1;
+                } else {
+                    acc.push({ ...item, qty: 1 });
+                }
+                return acc;
+            }, []);
+            
+            alert(`🛍️ Keranjang Belanja Toko Mustafa\n${'='.repeat(40)}\n\n${cartItems.map(item => `${item.qty}x ${item.name}\nRp ${item.price.toLocaleString('id-ID')} x ${item.qty} = Rp ${(item.price * item.qty).toLocaleString('id-ID')}`).join('\n\n')}\n\n${'='.repeat(40)}\n💰 Total: Rp ${total.toLocaleString('id-ID')}\n\nTerima kasih sudah berbelanja! 🙏`);
+        }
+
+        function toggleChat() {
+            const chatWindow = document.getElementById('chatWindow');
+            chatWindow.classList.toggle('active');
+            
+            if (chatWindow.classList.contains('active')) {
+                document.getElementById('chatInput').focus();
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            const messagesDiv = document.getElementById('chatMessages');
+            messagesDiv.innerHTML += `<div class="message user-message">${message}</div>`;
+            
+            input.value = '';
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            setTimeout(() => {
+                const lowerMessage = message.toLowerCase();
+                let botResponse = '';
+                
+                if (lowerMessage.includes('aqua') || lowerMessage.includes('air')) {
+                    botResponse = '💧 Kami punya berbagai ukuran Aqua: 330ml, 600ml, 1500ml, dan galon 19L! Harga mulai dari Rp 3.000';
+                } else if (lowerMessage.includes('indomie') || lowerMessage.includes('mie')) {
+                    botResponse = '🍜 Indomie tersedia banyak varian: Goreng, Soto, Kari Ayam, Ayam Bawang! Harga mulai Rp 3.500';
+                } else if (lowerMessage.includes('popok') || lowerMessage.includes('bayi')) {
+                    botResponse = '👶 Popok bayi lengkap: Pampers, MamyPoko, Merries, Sweety. Berbagai ukuran tersedia!';
+                } else if (lowerMessage.includes('harga') || lowerMessage.includes('murah')) {
+                    botResponse = '💰 Toko Mustafa selalu memberikan harga terbaik! Cek produk promo kami setiap hari!';
+                } else if (lowerMessage.includes('promo') || lowerMessage.includes('diskon')) {
+                    botResponse = '🎉 Ada promo menarik! Diskon hingga 30% untuk produk pilihan. Buruan belanja sekarang!';
+                } else if (lowerMessage.includes('terima kasih') || lowerMessage.includes('makasih')) {
+                    botResponse = '🙏 Sama-sama! Senang bisa membantu. Selamat berbelanja di Toko Mustafa!';
+                } else if (lowerMessage.includes('jam') || lowerMessage.includes('buka')) {
+                    botResponse = '🕐 Toko Mustafa buka setiap hari pukul 08.00 - 21.00 WIB. Kami siap melayani Anda!';
+                } else {
+                    const responses = [
+                        '😊 Produk yang Anda cari tersedia! Silakan cek di kategori yang sesuai.',
+                        '🔍 Coba gunakan fitur pencarian di atas untuk menemukan produk lebih cepat!',
+                        '✨ Kami punya lebih dari 500 produk berkualitas dengan harga terbaik!',
+                        '🎯 Toko Mustafa menyediakan semua kebutuhan sehari-hari Anda!',
+                        '💳 Pembayaran mudah dan aman. Gratis ongkir untuk pembelian di atas Rp 100.000!',
+                        '🚚 Pengiriman cepat ke seluruh Indonesia. Pesan hari ini, sampai besok!'
+                    ];
+                    botResponse = responses[Math.floor(Math.random() * responses.length)];
+                }
+                
+                messagesDiv.innerHTML += `<div class="message bot-message">${botResponse}</div>`;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 800);
+        }
+
+        document.getElementById('searchInput').addEventListener('input', () => {
+            currentPage = 1;
+            displayProducts();
+        });
+
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Add CSS animation for notification
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                to {
+                    opacity: 0;
+                    transform: translateX(400px);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initial display
+        displayProducts();
+        
+        // Welcome animation
+        setTimeout(() => {
+            const messagesDiv = document.getElementById('chatMessages');
+            messagesDiv.innerHTML += `<div class="message bot-message">
+                💡 Tips: Cari produk favorit dengan ketik "aqua", "indomie", atau "popok"!
+            </div>`;
+        }, 2000);
+    </script>
+</body>
+</html>
